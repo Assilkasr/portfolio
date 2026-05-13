@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acil Kasraoui — Développeuse Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d1117;
+      --bg2:       #161b22;
+      --bg3:       #1c2330;
+      --border:    #30363d;
+      --accent:    #2ea8a8;
+      --accent2:   #1e7a7a;
+      --purple:    #a371f7;
+      --text:      #e6edf3;
+      --text2:     #8b949e;
+      --text3:     #c9d1d9;
+      --grad:      linear-gradient(135deg, #2ea8a8 0%, #a371f7 100%);
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(0,0,0,.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--purple); }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(13,17,23,.85);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 64px;
+    }
+    .nav-logo {
+      font-weight: 800; font-size: 1.2rem;
+      background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: .9rem; font-weight: 500; color: var(--text2);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--grad); color: #fff !important;
+      padding: .4rem 1.1rem; border-radius: 6px;
+      font-weight: 600 !important; -webkit-text-fill-color: #fff !important;
+    }
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .burger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 100px 2rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(46,168,168,.15) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 80% 80%, rgba(163,113,247,.1) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: .15;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; text-align: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: .35rem 1rem; font-size: .8rem; color: var(--text2);
+      margin-bottom: 1.5rem; background: var(--bg2);
+    }
+    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: .5rem;
+    }
+    .hero-name span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-title {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text2); margin-bottom: 1.5rem; font-weight: 400;
+    }
+    .hero-title strong { color: var(--accent); font-weight: 600; }
+    .hero-desc {
+      max-width: 600px; margin: 0 auto 2.5rem;
+      color: var(--text3); font-size: 1rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--grad); color: #fff;
+      padding: .75rem 2rem; border-radius: 8px;
+      font-weight: 600; font-size: .95rem;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-primary:hover { opacity: .85; transform: translateY(-2px); color: #fff; }
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--text);
+      padding: .75rem 2rem; border-radius: 8px;
+      font-weight: 600; font-size: .95rem;
+      background: var(--bg2);
+      transition: border-color .2s, transform .2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      color: var(--text2); font-size: .75rem; animation: bounce 2s infinite;
+    }
+    .hero-scroll svg { width: 20px; opacity: .5; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+    /* ── SECTIONS ────────────────────────────────────────── */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Fira Code', monospace;
+      font-size: .8rem; color: var(--accent); letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: .75rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700; margin-bottom: 1rem;
+    }
+    .section-title span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-line {
+      width: 60px; height: 3px; background: var(--grad);
+      border-radius: 2px; margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────────── */
+    #about { background: var(--bg2); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-text p { color: var(--text3); margin-bottom: 1rem; line-height: 1.8; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+    .stat-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+      text-align: center;
+    }
+    .stat-card .num { font-size: 2rem; font-weight: 800; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-card .lbl { font-size: .8rem; color: var(--text2); margin-top: .25rem; }
+    .about-tech h3 { font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text2); }
+    .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: .75rem; }
+    .tech-pill {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; padding: .6rem 1rem;
+      font-size: .85rem; font-family: 'Fira Code', monospace;
+      color: var(--text3); text-align: center;
+      transition: border-color .2s, color .2s;
+    }
+    .tech-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── EXPERIENCE ──────────────────────────────────────── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--accent), var(--purple));
+    }
+    .timeline-item {
+      position: relative; margin-bottom: 3rem;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .timeline-item:hover { border-color: var(--accent); transform: translateX(4px); }
+    .timeline-item::before {
+      content: ''; position: absolute;
+      left: -2.55rem; top: 1.75rem;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent); border: 3px solid var(--bg);
+      box-shadow: 0 0 0 3px var(--accent2);
+    }
+    .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .5rem; margin-bottom: .75rem; }
+    .exp-title { font-size: 1.1rem; font-weight: 700; }
+    .exp-company { color: var(--accent); font-weight: 500; margin-top: .1rem; font-size: .95rem; }
+    .exp-date {
+      font-family: 'Fira Code', monospace; font-size: .78rem;
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: .3rem .75rem; border-radius: 999px; color: var(--text2); white-space: nowrap;
+    }
+    .exp-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+    .tag {
+      font-size: .72rem; padding: .2rem .6rem; border-radius: 999px;
+      font-family: 'Fira Code', monospace; font-weight: 500;
+    }
+    .tag-blue { background: rgba(46,168,168,.15); color: var(--accent); border: 1px solid rgba(46,168,168,.3); }
+    .tag-purple { background: rgba(163,113,247,.15); color: var(--purple); border: 1px solid rgba(163,113,247,.3); }
+    .exp-list { list-style: none; }
+    .exp-list li {
+      color: var(--text3); font-size: .92rem;
+      padding: .4rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: .75rem;
+    }
+    .exp-list li:last-child { border-bottom: none; }
+    .exp-list li::before { content: '▹'; color: var(--accent); flex-shrink: 0; margin-top: .05rem; }
+
+    /* ── PROJECTS ────────────────────────────────────────── */
+    #projects { background: var(--bg2); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      display: flex; flex-direction: column;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--grad);
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow); }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1rem;
+    }
+    .project-type {
+      font-size: .72rem; font-family: 'Fira Code', monospace;
+      color: var(--text2); text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: .5rem;
+    }
+    .project-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem; }
+    .project-card p { color: var(--text3); font-size: .9rem; line-height: 1.7; flex: 1; margin-bottom: 1.25rem; }
+    .project-features { list-style: none; margin-bottom: 1.25rem; }
+    .project-features li {
+      font-size: .85rem; color: var(--text3);
+      padding: .3rem 0; display: flex; gap: .5rem; align-items: flex-start;
+    }
+    .project-features li::before { content: '▹'; color: var(--accent); flex-shrink: 0; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .stack-tag {
+      font-size: .72rem; font-family: 'Fira Code', monospace;
+      background: var(--bg2); border: 1px solid var(--border);
+      padding: .2rem .55rem; border-radius: 4px; color: var(--text2);
+    }
+
+    /* ── EDUCATION ───────────────────────────────────────── */
+    .edu-grid { display: grid; gap: 1.25rem; }
+    .edu-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem 1.75rem;
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      transition: border-color .2s;
+    }
+    .edu-card:hover { border-color: var(--accent); }
+    .edu-icon {
+      width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0;
+      background: var(--bg3); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .edu-school { font-weight: 700; font-size: 1rem; }
+    .edu-degree { color: var(--accent); font-size: .9rem; margin: .2rem 0; }
+    .edu-date { font-size: .8rem; color: var(--text2); font-family: 'Fira Code', monospace; }
+    .edu-loc { font-size: .82rem; color: var(--text2); margin-top: .2rem; }
+
+    /* ── SKILLS ──────────────────────────────────────────── */
+    #skills { background: var(--bg2); }
+    .skills-outer { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .skill-group h3 { font-size: .85rem; color: var(--text2); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1.25rem; font-family: 'Fira Code', monospace; }
+    .skill-item { margin-bottom: 1.1rem; }
+    .skill-top { display: flex; justify-content: space-between; margin-bottom: .4rem; font-size: .9rem; }
+    .skill-bar-bg { height: 6px; background: var(--bg3); border-radius: 999px; overflow: hidden; }
+    .skill-bar { height: 100%; border-radius: 999px; background: var(--grad); width: 0; transition: width 1s ease; }
+    .soft-skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .soft-skill {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; padding: .75rem 1rem;
+      font-size: .88rem; color: var(--text3);
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .soft-skill span { color: var(--accent); }
+
+    /* ── CERTIFICATIONS ──────────────────────────────────── */
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    .cert-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .cert-card:hover { border-color: var(--purple); transform: translateY(-2px); }
+    .cert-icon {
+      width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(163,113,247,.2), rgba(46,168,168,.2));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+    }
+    .cert-name { font-weight: 600; font-size: .95rem; }
+    .cert-year { font-size: .8rem; color: var(--text2); margin-top: .2rem; font-family: 'Fira Code', monospace; }
+
+    /* ── CONTACT ─────────────────────────────────────────── */
+    #contact { text-align: center; }
+    .contact-wrapper { max-width: 640px; margin: 0 auto; }
+    .contact-wrapper p { color: var(--text3); margin-bottom: 2.5rem; font-size: 1.05rem; line-height: 1.8; }
+    .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: .6rem;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: .85rem 1.5rem;
+      color: var(--text3); font-size: .9rem; font-weight: 500;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .contact-link svg { width: 18px; flex-shrink: 0; }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem; text-align: center;
+      color: var(--text2); font-size: .82rem;
+    }
+    footer span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600; }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem; gap: 1rem; }
+      .nav-links.open { display: flex; }
+      .burger { display: flex; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .skills-outer { grid-template-columns: 1fr; gap: 2rem; }
+      .soft-skills-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+      section { padding: 4rem 1.25rem; }
+      .nav-cta { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">AK.</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#education">Formation</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Disponible — Alternance &amp; Projets
+    </div>
+    <h1 class="hero-name">Acil <span>Kasraoui</span></h1>
+    <p class="hero-title">
+      Développeuse Web · <strong>Angular</strong> · <strong>Spring Boot</strong> · <strong>Next.js</strong>
+    </p>
+    <p class="hero-desc">
+      Master Ingénierie du Web @ ESGI Lyon — en alternance chez BFCE-SI.<br/>
+      Je conçois des applications web performantes, de l'UI réactive au back-end robuste.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">Voir mes projets</a>
+      <a href="#contact" class="btn-outline">Me contacter</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    scroll
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text fade-up">
+        <p class="section-label">// à propos</p>
+        <h2 class="section-title">Qui suis-<span>je</span> ?</h2>
+        <div class="section-line"></div>
+        <p>
+          Étudiante en dernière année de <strong>Master Ingénierie du Web</strong> à l'école
+          <strong>Campus Science U ESGI</strong> à Lyon, je développe en alternance chez
+          <strong>BFCE-SI</strong> des interfaces Angular modernes et réactives.
+        </p>
+        <p>
+          Passionnée par l'architecture logicielle et les bonnes pratiques, j'aime créer
+          des solutions complètes — du design d'API REST Spring Boot à l'implémentation
+          d'interfaces dynamiques, en passant par l'intégration d'IA générative.
+        </p>
+        <p>
+          Rigoureuse, curieuse et orientée résultats, je m'épanouis dans des environnements
+          Agile où la collaboration et la livraison de valeur sont au cœur du travail.
+        </p>
+        <div class="about-stats">
+          <div class="stat-card"><div class="num">3+</div><div class="lbl">Ans d'expérience</div></div>
+          <div class="stat-card"><div class="num">5+</div><div class="lbl">Projets livrés</div></div>
+          <div class="stat-card"><div class="num">800</div><div class="lbl">Score TOEIC</div></div>
+          <div class="stat-card"><div class="num">3</div><div class="lbl">Langues parlées</div></div>
+        </div>
+      </div>
+      <div class="about-tech fade-up">
+        <h3>// stack technique</h3>
+        <div class="tech-grid">
+          <div class="tech-pill">Angular</div>
+          <div class="tech-pill">TypeScript</div>
+          <div class="tech-pill">Next.js</div>
+          <div class="tech-pill">React</div>
+          <div class="tech-pill">Spring Boot</div>
+          <div class="tech-pill">NestJS</div>
+          <div class="tech-pill">Java</div>
+          <div class="tech-pill">Node.js</div>
+          <div class="tech-pill">PostgreSQL</div>
+          <div class="tech-pill">MySQL</div>
+          <div class="tech-pill">SQL</div>
+          <div class="tech-pill">REST API</div>
+          <div class="tech-pill">OpenAI API</div>
+          <div class="tech-pill">Git</div>
+          <div class="tech-pill">Docker</div>
+          <div class="tech-pill">HTML / CSS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ─────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label">// parcours</p>
+    <h2 class="section-title">Expé<span>rience</span></h2>
+    <div class="section-line"></div>
+    <div class="timeline">
+
+      <!-- BFCE-SI -->
+      <div class="timeline-item fade-up">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Développeuse Web Angular</div>
+            <div class="exp-company">BFCE-SI — Villeurbanne, Lyon</div>
+          </div>
+          <div class="exp-date">Oct. 2024 → Oct. 2026</div>
+        </div>
+        <div class="exp-tags">
+          <span class="tag tag-blue">Angular 18</span>
+          <span class="tag tag-blue">TypeScript</span>
+          <span class="tag tag-blue">RxJS</span>
+          <span class="tag tag-purple">Alternance</span>
+        </div>
+        <ul class="exp-list">
+          <li><strong>Migration majeure</strong> — Pilotage de la montée de version Angular 7 → Angular 18 avec optimisation des performances et de la réactivité.</li>
+          <li><strong>Refonte UX/UI</strong> — Réécriture de la gestion des événements et création d'interfaces dynamiques modernes.</li>
+          <li><strong>Évolutions métiers</strong> — Implémentation de fonctionnalités d'impression et maintenance corrective applicative.</li>
+          <li><strong>Interconnexion</strong> — Liaison avec les bases de données et intégration des écrans via LBA.</li>
+        </ul>
+      </div>
+
+      <!-- Wind Consulting - Angular + Spring Boot -->
+      <div class="timeline-item fade-up">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Développeuse Angular & Spring Boot</div>
+            <div class="exp-company">Wind Consulting — Mahdia, Tunisie</div>
+          </div>
+          <div class="exp-date">Mai → Juil. 2024</div>
+        </div>
+        <div class="exp-tags">
+          <span class="tag tag-blue">Angular</span>
+          <span class="tag tag-blue">Spring Boot</span>
+          <span class="tag tag-blue">SQL</span>
+          <span class="tag tag-purple">Stage</span>
+        </div>
+        <ul class="exp-list">
+          <li><strong>Projet de maintenance</strong> — Conception d'une solution de gestion d'équipements en architecture micro-services.</li>
+          <li>Focus sur la scalabilité et les niveaux de bord métiers.</li>
+        </ul>
+      </div>
+
+      <!-- Wind Consulting - Spring Boot -->
+      <div class="timeline-item fade-up">
+        <div class="exp-header">
+          <div>
+            <div class="exp-title">Développeuse Full Stack Spring Boot</div>
+            <div class="exp-company">Wind Consulting — Mahdia, Tunisie</div>
+          </div>
+          <div class="exp-date">Juil. → Août 2022</div>
+        </div>
+        <div class="exp-tags">
+          <span class="tag tag-blue">Spring Boot</span>
+          <span class="tag tag-blue">Angular</span>
+          <span class="tag tag-blue">MySQL</span>
+          <span class="tag tag-blue">REST API</span>
+          <span class="tag tag-purple">Stage</span>
+        </div>
+        <ul class="exp-list">
+          <li>Développement d'une solution full stack connectée à des serveurs internationaux via <strong>API REST</strong>.</li>
+          <li>Gestion de base de données <strong>MySQL</strong> et interface web Angular.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ───────────────────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label">// réalisations</p>
+    <h2 class="section-title">Mes <span>Projets</span></h2>
+    <div class="section-line"></div>
+    <div class="projects-grid">
+
+      <!-- SaaS IA Curation -->
+      <div class="project-card fade-up">
+        <div class="project-icon">🤖</div>
+        <div class="project-type">Académique · ESGI · 2024</div>
+        <h3>Plateforme SaaS — Curation &amp; Rédaction IA</h3>
+        <p>Application SaaS complète répondant à un appel d'offres client : génération automatique de contenu (articles, posts) grâce à l'IA, avec stratégie SEO et archivage Notion.</p>
+        <ul class="project-features">
+          <li>Génération de contenu par IA — articles, posts, scoring interactif</li>
+          <li>Synchronisation bidirectionnelle avec <strong>Notion API</strong></li>
+          <li>Système de <strong>multi-tenancy</strong> — gestion des rôles &amp; invitations</li>
+          <li>Dashboard interactif avec métriques en temps réel</li>
+          <li>Stratégie SEO intégrée dès la conception</li>
+        </ul>
+        <div class="project-stack">
+          <span class="stack-tag">Next.js</span>
+          <span class="stack-tag">NestJS</span>
+          <span class="stack-tag">PostgreSQL</span>
+          <span class="stack-tag">OpenAI API</span>
+          <span class="stack-tag">Notion API</span>
+          <span class="stack-tag">Scraping</span>
+        </div>
+      </div>
+
+      <!-- Gestion Équipements -->
+      <div class="project-card fade-up">
+        <div class="project-icon">⚙️</div>
+        <div class="project-type">Professionnel · Wind Consulting · 2024</div>
+        <h3>Solution de Gestion d'Équipements</h3>
+        <p>Architecture micro-services pour la gestion d'équipements industriels, avec focus sur la scalabilité et les règles métiers complexes.</p>
+        <ul class="project-features">
+          <li>Architecture <strong>micro-services</strong> découplée et scalable</li>
+          <li>API REST Spring Boot consommée par le front Angular</li>
+          <li>Gestion des niveaux de bord métiers</li>
+        </ul>
+        <div class="project-stack">
+          <span class="stack-tag">Angular</span>
+          <span class="stack-tag">Spring Boot</span>
+          <span class="stack-tag">SQL</span>
+          <span class="stack-tag">Micro-services</span>
+        </div>
+      </div>
+
+      <!-- Migration Angular -->
+      <div class="project-card fade-up">
+        <div class="project-icon">🚀</div>
+        <div class="project-type">Professionnel · BFCE-SI · 2024–2026</div>
+        <h3>Migration Angular 7 → Angular 18</h3>
+        <p>Pilotage technique de la migration d'une application d'entreprise critique depuis Angular 7 vers Angular 18 avec refonte complète UX/UI.</p>
+        <ul class="project-features">
+          <li>Montée de version majeure sans interruption de service</li>
+          <li>Optimisation des performances &amp; réactivité (RxJS signals)</li>
+          <li>Refonte des interfaces dynamiques</li>
+          <li>Intégration LBA et bases de données</li>
+        </ul>
+        <div class="project-stack">
+          <span class="stack-tag">Angular 18</span>
+          <span class="stack-tag">TypeScript</span>
+          <span class="stack-tag">RxJS</span>
+          <span class="stack-tag">LBA</span>
+        </div>
+      </div>
+
+      <!-- Full Stack API REST -->
+      <div class="project-card fade-up">
+        <div class="project-icon">🌐</div>
+        <div class="project-type">Professionnel · Wind Consulting · 2022</div>
+        <h3>Application Full Stack &amp; API Internationale</h3>
+        <p>Solution web connectée à des serveurs internationaux via API REST, avec interface Angular et gestion complète de base de données.</p>
+        <ul class="project-features">
+          <li>Interface Web Angular responsive</li>
+          <li>API REST Spring Boot connectée à des services tiers internationaux</li>
+          <li>Base de données MySQL — modélisation &amp; requêtes optimisées</li>
+        </ul>
+        <div class="project-stack">
+          <span class="stack-tag">Angular</span>
+          <span class="stack-tag">Spring Boot</span>
+          <span class="stack-tag">MySQL</span>
+          <span class="stack-tag">REST API</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ─────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">// compétences</p>
+    <h2 class="section-title">Mes <span>Skills</span></h2>
+    <div class="section-line"></div>
+    <div class="skills-outer">
+      <div class="fade-up">
+        <div class="skill-group">
+          <h3>// frontend</h3>
+          <div class="skill-item">
+            <div class="skill-top"><span>Angular</span><span>90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="90"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>TypeScript</span><span>85%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="85"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>Next.js / React</span><span>75%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="75"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>HTML / CSS</span><span>90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="90"></div></div>
+          </div>
+        </div>
+        <br/>
+        <div class="skill-group">
+          <h3>// backend</h3>
+          <div class="skill-item">
+            <div class="skill-top"><span>Spring Boot</span><span>80%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="80"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>NestJS / Node.js</span><span>70%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="70"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>Java</span><span>75%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="75"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>SQL / PostgreSQL / MySQL</span><span>78%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="78"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="fade-up">
+        <div class="skill-group">
+          <h3>// soft skills</h3>
+          <div class="soft-skills-grid">
+            <div class="soft-skill"><span>◆</span> Flexibilité</div>
+            <div class="soft-skill"><span>◆</span> Adaptation rapide</div>
+            <div class="soft-skill"><span>◆</span> Dynamisme</div>
+            <div class="soft-skill"><span>◆</span> Rigueur</div>
+            <div class="soft-skill"><span>◆</span> Créativité</div>
+            <div class="soft-skill"><span>◆</span> Travail d'équipe</div>
+            <div class="soft-skill"><span>◆</span> Esprit d'analyse</div>
+            <div class="soft-skill"><span>◆</span> Proactivité</div>
+          </div>
+        </div>
+        <br/>
+        <div class="skill-group">
+          <h3>// langues</h3>
+          <div class="skill-item">
+            <div class="skill-top"><span>Français</span><span>Courant</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="95"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>Anglais</span><span>B2 — TOEIC 800</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="75"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>Arabe</span><span>Natif</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar" data-w="100"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ──────────────────────────────────────────── -->
+<section id="education">
+  <div class="container">
+    <p class="section-label">// formation</p>
+    <h2 class="section-title">Par<span>cours</span></h2>
+    <div class="section-line"></div>
+    <div class="edu-grid">
+      <div class="edu-card fade-up">
+        <div class="edu-icon">🎓</div>
+        <div>
+          <div class="edu-school">ESGI — Campus Science U</div>
+          <div class="edu-degree">Master Ingénierie du Web (Bachelor)</div>
+          <div class="edu-loc">📍 Lyon, France</div>
+          <div class="edu-date">2024 → 2026</div>
+        </div>
+      </div>
+      <div class="edu-card fade-up">
+        <div class="edu-icon">🎓</div>
+        <div>
+          <div class="edu-school">Université Claude Bernard Lyon 1</div>
+          <div class="edu-degree">Licence Informatique</div>
+          <div class="edu-loc">📍 Lyon, France</div>
+          <div class="edu-date">2020 → 2024</div>
+        </div>
+      </div>
+      <div class="edu-card fade-up">
+        <div class="edu-icon">📘</div>
+        <div>
+          <div class="edu-school">EFIR</div>
+          <div class="edu-degree">Baccalauréat Scientifique</div>
+          <div class="edu-loc">📍 Arabie Saoudite</div>
+          <div class="edu-date">2019 → 2020</div>
+        </div>
+      </div>
+    </div>
+
+    <br/><br/>
+    <p class="section-label">// certifications</p>
+    <h2 class="section-title">Certifi<span>cations</span></h2>
+    <div class="section-line"></div>
+    <div class="certs-grid">
+      <div class="cert-card fade-up">
+        <div class="cert-icon">🐍</div>
+        <div>
+          <div class="cert-name">Python pour Data Science, IA &amp; Développement</div>
+          <div class="cert-year">IBM — 2024</div>
+        </div>
+      </div>
+      <div class="cert-card fade-up">
+        <div class="cert-icon">🌍</div>
+        <div>
+          <div class="cert-name">TOEIC — Test of English for International Communication</div>
+          <div class="cert-year">Score : 800 / 990</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrapper">
+      <p class="section-label">// contact</p>
+      <h2 class="section-title">Travaillons <span>ensemble</span></h2>
+      <div class="section-line" style="margin: 0 auto 2rem;"></div>
+      <p>
+        Disponible pour des opportunités en alternance, stages ou projets freelance.
+        N'hésite pas à me contacter — je réponds rapidement !
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:acilkasraoui@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          acilkasraoui@gmail.com
+        </a>
+        <a class="contact-link" href="tel:+33614126919">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.64 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.98-.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +33 6 14 12 69 19
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/acil-kasraoui" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+      <a href="mailto:acilkasraoui@gmail.com" class="btn-primary" style="display:inline-block;">
+        Envoyer un message ✉️
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <p>Conçu &amp; développé par <span>Acil Kasraoui</span> · 2025</p>
+</footer>
+
+<!-- ── JS ────────────────────────────────────────────────── -->
+<script>
+  // Menu burger
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        // Animate skill bars
+        e.target.querySelectorAll('.skill-bar').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Also observe skill bars when in view
+  document.querySelectorAll('.skill-bar').forEach(bar => {
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) bar.style.width = bar.dataset.w + '%';
+      });
+    }, { threshold: 0.5 });
+    skillObserver.observe(bar);
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    navAs.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
